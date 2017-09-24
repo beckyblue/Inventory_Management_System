@@ -1,0 +1,135 @@
+       //// Model ViewModel ////
+       
+       using System;
+using System.Web.Mvc;
+using InventoryManagementSystem.Extension;
+using System.Collections.Generic;
+using InventoryManagementSystem.Models;
+using System.Linq;
+using System.Web;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace InventoryManagementSystem.Models.ViewModels
+{
+    public class MenuItemIngredientViewModel
+    {
+
+        //public MenuItemIngredientList MenuItemIngredientList { get; set; }// Pulls in ingredient list for SelectListItem
+        public MenuItem MenuItem { get; set; } // MenuItem DB
+        public Ingredient Ingredient { get; set; }
+
+        public List<string> SelectedIngredients { get; set; } //Pullin selected ingred.
+        public List<SelectListItem> IngredientsList { get; set; } //pull in list of ingred.
+
+        //public virtual IList<Ingredient> IngredientList { get; set; }
+
+        
+        //public int[] SelectedIngredients { set; get; }
+
+
+
+        //public IList<SelectListItem> Ingredients { get; set; } // Pulls Ingredients List 
+
+    }
+}
+        
+  /////CONTROLLER////
+        /*
+        //Having issues with getting it to pull w/o a Key
+        public ActionResult IngredientsListed(Guid id)
+        {
+            var menuitem = db.MenuItems.Find(id);
+
+            //Start of ListBox
+            //var ingredientList = new List<SelectListItem>();
+            //ingredientList.Add(new SelectListItem { Text = "Ham", Value = "Ham" });
+            //ingredientList.Add(new SelectListItem { Text = "Cheese", Value = "Cheese" });
+            //ingredientList.Add(new SelectListItem { Text = "Wheat", Value = "Wheat" });
+            //ingredientList.Add(new SelectListItem { Text = "Tomato", Value = "Tomato" });
+
+            var viewModel = new MenuItemIngredientViewModel();
+            viewModel.MenuItem = menuitem;
+            viewModel.IngredientsList = MenuItemIngredientList.GetIngredientList();
+
+            // New code to get selected ingredients
+            string[] ingredientsArray = menuitem.MenuItemName.Split(',');
+
+            foreach (var ingredient in ingredientsArray)
+            {
+                viewModel.SelectedIngredients.Add(ingredient);
+            }
+
+            return View(viewModel);
+        }
+
+        //Post Action
+        // To impliment updating to Ingredients ???
+        // Code is incomplete. 
+
+        /*
+        [HttpPost]
+        public ActionResult Edit(MenuItemIngredientViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var ingredients = string.Join(",", model.SelectedIngredients);
+                model.MenuItem.MenuItemName = ingredients;
+                db.Entry(model.Ingredient).IngredientName = EntityIngredients.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            var ingredientList = new List<SelectListItem>();
+            ingredientList.Add(new SelectListItem { Text = "Ham", Value = "Ham" });
+            ingredientList.Add(new SelectListItem { Text = "Cheese", Value = "Cheese" });
+            ingredientList.Add(new SelectListItem { Text = "Wheat", Value = "Wheat" });
+            ingredientList.Add(new SelectListItem { Text = "Tomato", Value = "Tomato" });
+
+            model.IngredientsList = ingredientList;
+
+            return View(model);
+        }
+     
+        */
+        
+  //////VIEW MODEL////////
+        @model IEnumerable<InventoryManagementSystem.Models.ViewModels.MenuItemIngredientViewModel>
+
+@{
+    ViewBag.Title = "IngredientsListedVM";
+    Layout = "~/Views/MenuItems/Index.cshtml";
+}
+
+<h2>IngredientsListedVM</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+
+
+
+<table class="table">
+    <tr>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+          IngredientList: @Html.ListBox("ingredientList", new MenuItemIngredientList.GetIngredientList())
+
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
+        
+        
